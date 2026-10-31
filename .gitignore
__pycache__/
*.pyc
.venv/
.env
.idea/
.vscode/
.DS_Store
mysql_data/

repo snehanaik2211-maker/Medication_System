@@ -1,0 +1,40 @@
+INSERT INTO residents (name, age, room_number, contact_name, phone, emergency_contact, medical_conditions, notes, status)
+VALUES
+('Margaret Smith', 82, 'A-12', 'Emma Smith', '071-555-1101', '071-555-1201', 'Arthritis, Hypertension', 'Enjoys morning tea and reading', 'active'),
+('John Peters', 76, 'B-04', 'Sarah Peters', '071-555-2210', '071-555-2299', 'Diabetes, Vision impairment', 'Needs blood sugar monitoring', 'active'),
+('Rose Wilson', 88, 'C-07', 'Daniel Wilson', '071-555-3312', '071-555-3399', 'Hypertension, Osteoporosis', 'Requires evening assistance', 'active'),
+('Henry Moore', 74, 'D-15', 'Lucy Moore', '071-555-4413', '071-555-4499', 'Asthma, Heart condition', 'Medication schedule reviewed weekly', 'active');
+
+INSERT INTO medical_history (resident_id, previous_illnesses, surgeries, allergies, medical_record)
+VALUES
+(1, 'Kidney stone, mild pneumonia', 'Knee replacement', 'Penicillin', 'Routine blood pressure review every month'),
+(2, 'High blood sugar episodes', 'Appendectomy', 'Latex', 'Insulin administered daily at 09:30'),
+(3, 'Bone fracture in 2021', 'Hip surgery', 'No known allergies', 'Calcium supplement every morning'),
+(4, 'Seasonal asthma attacks', 'Bypass surgery', 'Dust, pollen', 'Uses inhaler twice daily');
+
+INSERT INTO medicines (name, dosage, frequency, category, stock_quantity, expiry_date, reorder_level, notes)
+VALUES
+('Paracetamol', '500mg', 'Twice daily', 'Pain Relief', 18, '2026-12-02', 10, 'Use with food as needed'),
+('Atorvastatin', '10mg', 'Once daily', 'Cardiac', 42, '2026-11-28', 15, 'Morning medication'),
+('Insulin', '10 units', 'Before breakfast', 'Diabetes', 8, '2026-10-31', 12, 'Check blood sugar before dose'),
+('Aspirin', '81mg', 'Once daily', 'Cardiac', 26, '2026-12-18', 15, 'Low dose preventive therapy'),
+('Salbutamol Inhaler', '2 puffs', 'As needed', 'Respiratory', 5, '2026-09-28', 8, 'Store in cool place');
+
+INSERT INTO medication_schedule (resident_id, medicine_id, dosage_time, start_date, end_date, instructions, status)
+VALUES
+(1, 1, '08:00:00', '2026-10-01', '2026-12-31', 'Administer after breakfast', 'upcoming'),
+(2, 3, '09:30:00', '2026-10-01', '2026-12-31', 'Check blood glucose before administration', 'upcoming'),
+(3, 2, '07:00:00', '2026-10-01', '2026-12-31', 'Take with water in the morning', 'upcoming'),
+(4, 5, '18:00:00', '2026-10-01', '2026-12-31', 'Use inhaler only when breathing is difficult', 'upcoming');
+
+INSERT INTO medication_log (resident_id, medicine_id, scheduled_time, administered_at, status, notes, caretaker_name)
+VALUES
+(1, 1, '2026-10-30 08:00:00', '2026-10-30 08:10:00', 'completed', 'No adverse reaction', 'Nina'),
+(2, 3, '2026-10-30 09:30:00', '2026-10-30 09:35:00', 'completed', 'Blood sugar within range', 'Mira'),
+(3, 2, '2026-10-30 07:00:00', '2026-10-30 07:05:00', 'completed', 'No issues reported', 'Nina');
+
+INSERT INTO stock_alerts (medicine_id, alert_type, details)
+VALUES
+(1, 'low_stock', 'Paracetamol stock is below reorder level'),
+(3, 'low_stock', 'Insulin stock is reaching minimum threshold'),
+(5, 'expired', 'Salbutamol inhaler is near expiry date');
