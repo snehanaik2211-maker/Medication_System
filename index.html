@@ -1,0 +1,891 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CareMed - Medication Management</title>
+
+<style>
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Arial, sans-serif;
+}
+
+body {
+    background: #f3f7f8;
+    color: #263746;
+}
+
+header {
+    background: #175b65;
+    color: white;
+    padding: 22px;
+    text-align: center;
+}
+
+header h1 {
+    font-size: 28px;
+}
+
+header p {
+    margin-top: 8px;
+    font-size: 16px;
+}
+
+nav {
+    background: #ffffff;
+    padding: 15px;
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 10px;
+    box-shadow: 0 2px 5px #0001;
+}
+
+nav button {
+    background: #e7f1f2;
+    color: #175b65;
+    font-weight: bold;
+}
+
+button {
+    padding: 12px 17px;
+    border: none;
+    border-radius: 7px;
+    cursor: pointer;
+    background: #176a75;
+    color: white;
+    font-size: 15px;
+    margin: 4px;
+}
+
+button:hover {
+    opacity: 0.85;
+}
+
+.container {
+    width: 94%;
+    max-width: 1400px;
+    margin: 25px auto;
+}
+
+.section {
+    background: white;
+    padding: 25px;
+    border-radius: 12px;
+    margin-bottom: 22px;
+    box-shadow: 0 3px 12px #0000000d;
+}
+
+.section h2 {
+    color: #175b65;
+    margin-bottom: 20px;
+}
+
+.dashboard {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+    gap: 18px;
+    margin-bottom: 25px;
+}
+
+.card {
+    background: white;
+    padding: 23px;
+    border-radius: 12px;
+    border-left: 5px solid #27929b;
+    box-shadow: 0 3px 10px #0000000d;
+}
+
+.card p {
+    color: #64748b;
+    font-size: 16px;
+}
+
+.card h2 {
+    color: #175b65;
+    margin-top: 12px;
+    font-size: 32px;
+}
+
+input, select, textarea {
+    padding: 13px;
+    margin: 7px 4px;
+    border: 1px solid #cbd5e1;
+    border-radius: 7px;
+    font-size: 16px;
+    width: 220px;
+    max-width: 100%;
+}
+
+textarea {
+    width: 95%;
+    min-height: 75px;
+    resize: vertical;
+}
+
+label {
+    font-weight: bold;
+    margin-left: 5px;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+th, td {
+    padding: 14px;
+    border-bottom: 1px solid #e2e8f0;
+    text-align: left;
+}
+
+th {
+    background: #e8f3f3;
+    color: #175b65;
+}
+
+tr:hover {
+    background: #f8fbfb;
+}
+
+.badge {
+    padding: 6px 10px;
+    border-radius: 5px;
+    font-weight: bold;
+    font-size: 13px;
+}
+
+.green {
+    background: #d1fae5;
+    color: #047857;
+}
+
+.red {
+    background: #fee2e2;
+    color: #b91c1c;
+}
+
+.orange {
+    background: #ffedd5;
+    color: #c2410c;
+}
+
+.blue {
+    background: #dbeafe;
+    color: #1d4ed8;
+}
+
+.reminder {
+    border-left: 5px solid #e59b36;
+    padding: 15px;
+    margin: 12px 0;
+    background: #fff8eb;
+    border-radius: 7px;
+}
+
+.alert {
+    background: #fee2e2;
+    color: #991b1b;
+    padding: 14px;
+    margin: 10px 0;
+    border-radius: 7px;
+}
+
+.hidden {
+    display: none;
+}
+
+.search {
+    width: 100%;
+    margin-bottom: 15px;
+}
+
+.actions {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.danger {
+    background: #c0392b;
+}
+
+footer {
+    background: #175b65;
+    color: white;
+    text-align: center;
+    padding: 18px;
+    margin-top: 30px;
+}
+
+@media(max-width: 700px) {
+    .container {
+        width: 96%;
+    }
+
+    .section {
+        padding: 15px;
+        overflow-x: auto;
+    }
+
+    table {
+        min-width: 650px;
+    }
+
+    nav {
+        gap: 5px;
+    }
+
+    nav button {
+        font-size: 13px;
+        padding: 10px;
+    }
+
+    header h1 {
+        font-size: 22px;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<header>
+    <h1>💊 CareMed</h1>
+    <p>Old Age Home Medication Management System</p>
+</header>
+
+<nav>
+    <button onclick="showPage('dashboard')">Dashboard</button>
+    <button onclick="showPage('residents')">Residents</button>
+    <button onclick="showPage('medicines')">Medications</button>
+    <button onclick="showPage('reminders')">Reminders</button>
+    <button onclick="showPage('history')">Medical History</button>
+</nav>
+
+<div class="container">
+
+<!-- DASHBOARD -->
+
+<div id="dashboard" class="page">
+
+    <h2>Welcome to CareMed Dashboard 👋</h2>
+
+    <div class="dashboard">
+
+        <div class="card">
+            <p>Total Residents</p>
+            <h2 id="totalResidents">0</h2>
+        </div>
+
+        <div class="card">
+            <p>Total Medicines</p>
+            <h2 id="totalMedicines">0</h2>
+        </div>
+
+        <div class="card">
+            <p>Today's Scheduled Doses</p>
+            <h2 id="totalDoses">0</h2>
+        </div>
+
+        <div class="card">
+            <p>Pending Doses</p>
+            <h2 id="pendingDoses">0</h2>
+        </div>
+
+    </div>
+
+    <div class="section">
+        <h2>⚠️ Important Alerts</h2>
+        <div id="dashboardAlerts"></div>
+    </div>
+
+    <div class="section">
+        <h2>Today's Medication Overview</h2>
+        <div id="todayOverview"></div>
+    </div>
+
+</div>
+
+<!-- RESIDENT MANAGEMENT -->
+
+<div id="residents" class="page hidden">
+
+    <div class="section">
+
+        <h2>👴 Resident Management</h2>
+
+        <h3>Add New Resident</h3>
+
+        <input id="rname" placeholder="Resident Name">
+        <input id="rage" type="number" placeholder="Age">
+        <input id="rroom" placeholder="Room Number">
+        <input id="rcontact" placeholder="Emergency Contact">
+
+        <button onclick="addResident()">Add Resident</button>
+
+        <h3 style="margin-top:25px">Resident Details</h3>
+
+        <input class="search" id="residentSearch"
+        placeholder="Search residents..."
+        oninput="displayResidents()">
+
+        <table>
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Age</th>
+                    <th>Room</th>
+                    <th>Emergency Contact</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody id="residentTable"></tbody>
+        </table>
+
+    </div>
+
+</div>
+
+<!-- MEDICATION MANAGEMENT -->
+
+<div id="medicines" class="page hidden">
+
+    <div class="section">
+
+        <h2>💊 Medication Management</h2>
+
+        <h3>Add New Medicine</h3>
+
+        <select id="mresident">
+            <option value="">Select Resident</option>
+        </select>
+
+        <input id="mname" placeholder="Medicine Name">
+        <input id="mdose" placeholder="Dosage (e.g. 1 tablet)">
+
+        <select id="mfrequency">
+            <option value="Once daily">Once daily</option>
+            <option value="Twice daily">Twice daily</option>
+            <option value="Three times daily">Three times daily</option>
+            <option value="Four times daily">Four times daily</option>
+        </select>
+
+        <select id="mtiming">
+            <option value="Morning">Morning</option>
+            <option value="Afternoon">Afternoon</option>
+            <option value="Evening">Evening</option>
+            <option value="Night">Night</option>
+        </select>
+
+        <label>Start Date</label>
+        <input id="mstart" type="date">
+
+        <label>End Date</label>
+        <input id="mend" type="date">
+
+        <button onclick="addMedicine()">Add Medication</button>
+
+        <h3 style="margin-top:25px">Medicine Records</h3>
+
+        <input class="search" id="medicineSearch"
+        placeholder="Search medicines or residents..."
+        oninput="displayMedicines()">
+
+        <div style="overflow-x:auto">
+        <table>
+            <thead>
+                <tr>
+                    <th>Resident</th>
+                    <th>Medicine</th>
+                    <th>Dosage</th>
+                    <th>Frequency</th>
+                    <th>Timing</th>
+                    <th>Duration</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody id="medicineTable"></tbody>
+        </table>
+        </div>
+
+    </div>
+
+</div>
+
+<!-- REMINDERS -->
+
+<div id="reminders" class="page hidden">
+
+    <div class="section">
+
+        <h2>⏰ Medication Reminders</h2>
+
+        <p>Track scheduled medicine doses for each resident.</p>
+
+        <div id="reminderList"></div>
+
+    </div>
+
+</div>
+
+<!-- MEDICAL HISTORY -->
+
+<div id="history" class="page hidden">
+
+    <div class="section">
+
+        <h2>🏥 Medical History</h2>
+
+        <h3>Add Medical Information</h3>
+
+        <select id="hresident">
+            <option value="">Select Resident</option>
+        </select>
+
+        <textarea id="condition"
+        placeholder="Medical Conditions / History"></textarea>
+
+        <textarea id="allergy"
+        placeholder="Allergies"></textarea>
+
+        <button onclick="addHistory()">Save Medical History</button>
+
+        <h3 style="margin-top:25px">Resident Medical Records</h3>
+
+        <div id="historyList"></div>
+
+    </div>
+
+</div>
+
+</div>
+
+<footer>
+    <p>CareMed | Old Age Home Healthcare Support System</p>
+    <p>Designed for better care and medication management.</p>
+</footer>
+
+<script>
+
+// DATA STORAGE
+
+let residents = JSON.parse(localStorage.getItem("residents")) || [];
+let medicines = JSON.parse(localStorage.getItem("medicines")) || [];
+let histories = JSON.parse(localStorage.getItem("histories")) || [];
+let doses = JSON.parse(localStorage.getItem("doses")) || {};
+
+// DATE
+
+function today() {
+    return new Date().toLocaleDateString("en-CA");
+}
+
+function saveData() {
+    localStorage.setItem("residents", JSON.stringify(residents));
+    localStorage.setItem("medicines", JSON.stringify(medicines));
+    localStorage.setItem("histories", JSON.stringify(histories));
+    localStorage.setItem("doses", JSON.stringify(doses));
+}
+
+// SAFE HTML DISPLAY
+
+function safe(value) {
+    return String(value ?? "").replace(/[&<>"']/g, c => ({
+        "&":"&amp;", "<":"&lt;", ">":"&gt;",
+        '"':"&quot;", "'":"&#39;"
+    })[c]);
+}
+
+// NAVIGATION
+
+function showPage(id) {
+    document.querySelectorAll(".page").forEach(p =>
+        p.classList.add("hidden")
+    );
+
+    document.getElementById(id).classList.remove("hidden");
+
+    if(id === "reminders") displayReminders();
+    if(id === "history") displayHistory();
+}
+
+// RESIDENTS
+
+function addResident() {
+
+    let name = document.getElementById("rname").value.trim();
+    let age = document.getElementById("rage").value;
+    let room = document.getElementById("rroom").value.trim();
+    let contact = document.getElementById("rcontact").value.trim();
+
+    if(!name || !age || Number(age) < 1 || !room || !contact) {
+        alert("Please enter valid resident details.");
+        return;
+    }
+
+    residents.push({
+        id: Date.now() + Math.random(),
+        name, age, room, contact
+    });
+
+    saveData();
+
+    ["rname","rage","rroom","rcontact"].forEach(id =>
+        document.getElementById(id).value = ""
+    );
+
+    refresh();
+}
+
+function displayResidents() {
+
+    let search = document.getElementById("residentSearch").value.toLowerCase();
+
+    let html = "";
+
+    residents.forEach((r,i) => {
+
+        if(!r.name.toLowerCase().includes(search)) return;
+
+        html += `
+        <tr>
+            <td>${safe(r.name)}</td>
+            <td>${safe(r.age)}</td>
+            <td>${safe(r.room)}</td>
+            <td>${safe(r.contact)}</td>
+            <td>
+                <button class="danger" onclick="deleteResident(${i})">Delete</button>
+            </td>
+        </tr>`;
+    });
+
+    document.getElementById("residentTable").innerHTML = html;
+
+    let options = '<option value="">Select Resident</option>';
+
+    residents.forEach((r,i) => {
+        options += `<option value="${i}">${safe(r.name)}</option>`;
+    });
+
+    document.getElementById("mresident").innerHTML = options;
+    document.getElementById("hresident").innerHTML = options;
+
+    document.getElementById("totalResidents").innerText = residents.length;
+}
+
+function deleteResident(i) {
+
+    if(!confirm("Delete this resident and their records?")) return;
+
+    residents.splice(i,1);
+
+    // Remove associated medicines and histories
+    medicines = medicines.filter(m => m.residentId !== residents[i]?.id);
+
+    // Rebuild medicine list safely using the removed resident's ID
+    // (Associated records are removed in the corrected logic below.)
+
+    saveData();
+    refresh();
+}
+
+// MEDICINES
+
+function addMedicine() {
+
+    let residentIndex = document.getElementById("mresident").value;
+    let name = document.getElementById("mname").value.trim();
+    let dosage = document.getElementById("mdose").value.trim();
+    let frequency = document.getElementById("mfrequency").value;
+    let timing = document.getElementById("mtiming").value;
+    let start = document.getElementById("mstart").value;
+    let end = document.getElementById("mend").value;
+
+    if(residentIndex === "" || !name || !dosage || !start || !end || start > end) {
+        alert("Please fill all medication details correctly.");
+        return;
+    }
+
+    let r = residents[Number(residentIndex)];
+
+    if(!r) return;
+
+    medicines.push({
+        id: Date.now() + Math.random(),
+        residentId: r.id,
+        name, dosage, frequency, timing, start, end
+    });
+
+    saveData();
+
+    ["mname","mdose","mstart","mend"].forEach(id =>
+        document.getElementById(id).value = ""
+    );
+
+    refresh();
+}
+
+function getResident(id) {
+    return residents.find(r => r.id === id);
+}
+
+function displayMedicines() {
+
+    let search = document.getElementById("medicineSearch").value.toLowerCase();
+
+    let html = "";
+
+    medicines.forEach((m,i) => {
+
+        let r = getResident(m.residentId);
+        if(!r) return;
+
+        if(!(m.name + r.name).toLowerCase().includes(search)) return;
+
+        html += `
+        <tr>
+            <td>${safe(r.name)}</td>
+            <td>${safe(m.name)}</td>
+            <td>${safe(m.dosage)}</td>
+            <td>${safe(m.frequency)}</td>
+            <td>${safe(m.timing)}</td>
+            <td>${safe(m.start)} to ${safe(m.end)}</td>
+            <td><button class="danger" onclick="deleteMedicine(${i})">Delete</button></td>
+        </tr>`;
+    });
+
+    document.getElementById("medicineTable").innerHTML = html;
+    document.getElementById("totalMedicines").innerText = medicines.length;
+}
+
+function deleteMedicine(i) {
+
+    if(!confirm("Delete this medication?")) return;
+
+    medicines.splice(i,1);
+    saveData();
+    refresh();
+}
+
+// DOSE TRACKING
+
+function slotsFor(m) {
+
+    if(m.frequency === "Once daily") return [m.timing];
+
+    if(m.frequency === "Twice daily")
+        return ["Morning","Evening"];
+
+    if(m.frequency === "Three times daily")
+        return ["Morning","Afternoon","Evening"];
+
+    return ["Morning","Afternoon","Evening","Night"];
+}
+
+function doseKey(m, slot) {
+    return today() + "_" + m.id + "_" + slot;
+}
+
+function getStatus(m, slot) {
+    return doses[doseKey(m,slot)] || "Pending";
+}
+
+function markDose(id,slot,status) {
+
+    let m = medicines.find(x => x.id === id);
+
+    if(!m) return;
+
+    doses[doseKey(m,slot)] = status;
+
+    saveData();
+    refresh();
+}
+
+// REMINDERS
+
+function displayReminders() {
+
+    let html = "";
+    let total = 0;
+    let pending = 0;
+    let alerts = "";
+
+    let groups = ["Morning","Afternoon","Evening","Night"];
+
+    groups.forEach(group => {
+
+        html += `<h3 style="margin-top:22px;color:#175b65">${group}</h3>`;
+
+        medicines.forEach(m => {
+
+            if(today() < m.start || today() > m.end) return;
+
+            let r = getResident(m.residentId);
+            if(!r || !slotsFor(m).includes(group)) return;
+
+            total++;
+
+            let status = getStatus(m,group);
+
+            if(status === "Pending") pending++;
+
+            let badge = status === "Taken" ? "green" :
+                        status === "Missed" ? "red" : "orange";
+
+            html += `
+            <div class="reminder">
+                <strong>${safe(r.name)}</strong><br>
+                Medicine: ${safe(m.name)}<br>
+                Dosage: ${safe(m.dosage)}<br>
+                Status: <span class="badge ${badge}">${status}</span><br>
+                <button onclick="markDose(${m.id},'${group}','Taken')">Mark Taken</button>
+                <button class="danger" onclick="markDose(${m.id},'${group}','Missed')">Mark Missed</button>
+            </div>`;
+
+            if(status === "Missed") {
+                alerts += `<div class="alert">Missed: ${safe(m.name)} - ${safe(r.name)} (${group})</div>`;
+            }
+        });
+    });
+
+    if(total === 0) html = "<p>No scheduled medications for today.</p>";
+
+    document.getElementById("reminderList").innerHTML = html;
+}
+
+// MEDICAL HISTORY
+
+function addHistory() {
+
+    let index = document.getElementById("hresident").value;
+    let condition = document.getElementById("condition").value.trim();
+    let allergy = document.getElementById("allergy").value.trim();
+
+    if(index === "" || (!condition && !allergy)) {
+        alert("Select a resident and enter medical information.");
+        return;
+    }
+
+    histories.push({
+        residentId: residents[Number(index)].id,
+        condition, allergy
+    });
+
+    saveData();
+
+    document.getElementById("condition").value = "";
+    document.getElementById("allergy").value = "";
+
+    displayHistory();
+}
+
+function displayHistory() {
+
+    let html = "";
+
+    histories.forEach(h => {
+
+        let r = getResident(h.residentId);
+        if(!r) return;
+
+        html += `
+        <div class="reminder">
+            <h3>${safe(r.name)}</h3>
+            <p><strong>Medical Conditions:</strong> ${safe(h.condition || "Not provided")}</p>
+            <p><strong>Allergies:</strong> ${safe(h.allergy || "Not provided")}</p>
+        </div>`;
+    });
+
+    document.getElementById("historyList").innerHTML =
+        html || "<p>No medical records available.</p>";
+}
+
+// DASHBOARD
+
+function updateDashboard() {
+
+    let active = medicines.filter(m =>
+        today() >= m.start && today() <= m.end
+    );
+
+    let total = 0;
+    let pending = 0;
+    let alerts = "";
+    let overview = "";
+
+    active.forEach(m => {
+
+        let r = getResident(m.residentId);
+        if(!r) return;
+
+        slotsFor(m).forEach(slot => {
+
+            total++;
+
+            let status = getStatus(m,slot);
+
+            if(status === "Pending") pending++;
+
+            if(status === "Missed") {
+                alerts += `<div class="alert">Missed dose: ${safe(r.name)} - ${safe(m.name)} (${slot})</div>`;
+            }
+
+            overview += `
+            <div class="reminder">
+                <strong>${safe(r.name)}</strong> - ${safe(m.name)}
+                <br>${slot} | ${safe(m.dosage)}
+                <br>Status: ${safe(status)}
+            </div>`;
+        });
+    });
+
+    document.getElementById("totalDoses").innerText = total;
+    document.getElementById("pendingDoses").innerText = pending;
+
+    document.getElementById("dashboardAlerts").innerHTML =
+        alerts || "<p>No missed doses recorded today.</p>";
+
+    document.getElementById("todayOverview").innerHTML =
+        overview || "<p>No medication scheduled today.</p>";
+}
+
+// REFRESH
+
+function refresh() {
+    displayResidents();
+    displayMedicines();
+    updateDashboard();
+
+    if(!document.getElementById("reminders").classList.contains("hidden"))
+        displayReminders();
+
+    if(!document.getElementById("history").classList.contains("hidden"))
+        displayHistory();
+}
+
+// START APPLICATION
+
+refresh();
+
+</script>
+
+</body>
+</html>
+function deleteResident(i) {
+    if(!confirm("Delete this resident and their records?")) return;
+
+    let id = residents[i].id;
+
+    residents.splice(i, 1);
+    medicines = medicines.filter(m => m.residentId !== id);
+    histories = histories.filter(h => h.residentId !== id);
+
+    saveData();
+    refresh();
+}
